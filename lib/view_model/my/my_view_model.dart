@@ -1,7 +1,9 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:wabiz_app/model/login/login_model.dart';
+import 'package:wabiz_app/model/project/project_model.dart';
 import 'package:wabiz_app/repository/my/my_repository.dart';
+import 'package:wabiz_app/shared/model/response_model.dart';
 import 'package:wabiz_app/view_model/login/login_view_model.dart';
 
 part 'my_view_model.g.dart';
@@ -31,15 +33,19 @@ class MyPageViewModel extends _$MyPageViewModel {
     );
   }
 
-  fetchUserProjects() {
-
+  Future<List<ProjectItemModel>> fetchUserProjects() async {
+    final userId = state.loginModel?.id;
+    final result = await ref.watch(myRepositoryProvider).getProjectByUserId(userId.toString());
+    return result.data;
   }
 
-  updateProject(String id) async {
-    await ref.watch(myRepositoryProvider).updateProjectOpenState(id);
+  Future<bool> updateProject(String id, ProjectItemModel body) async {
+    final result = await ref.watch(myRepositoryProvider).updateProjectOpenState(id, body);
+    return result.status == 'ok' ? true : false;
   }
 
-  deleteProject(String id) async {
-    await ref.read(myRepositoryProvider).deleteProject(id);
+  Future<bool> deleteProject(String id) async {
+    final result = await ref.read(myRepositoryProvider).deleteProject(id);
+    return result.status == 'ok' ? true : false;
   }
 }

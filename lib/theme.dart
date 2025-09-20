@@ -67,6 +67,12 @@ final ThemeData wabizDefaultTheme = ThemeData(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadiusGeometry.circular(8),
     ),
+  ),
+  popupMenuTheme: PopupMenuThemeData(
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadiusGeometry.circular(12),
+    )
   )
 );
 

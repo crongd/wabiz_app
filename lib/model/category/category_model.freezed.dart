@@ -227,7 +227,6 @@ mixin _$CategoryItemModel {
   String? get owner => throw _privateConstructorUsedError;
   int? get price => throw _privateConstructorUsedError;
   String? get thumbnail => throw _privateConstructorUsedError;
-  String? get count => throw _privateConstructorUsedError;
   String? get deadline => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   int? get waitlistCount => throw _privateConstructorUsedError;
@@ -236,7 +235,6 @@ mixin _$CategoryItemModel {
   String? get isOpen => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   String? get type => throw _privateConstructorUsedError;
-  String? get projectType => throw _privateConstructorUsedError;
   List<int> get image => throw _privateConstructorUsedError;
 
   /// Serializes this CategoryItemModel to a JSON map.
@@ -264,7 +262,6 @@ abstract class $CategoryItemModelCopyWith<$Res> {
       String? owner,
       int? price,
       String? thumbnail,
-      String? count,
       String? deadline,
       String? description,
       int? waitlistCount,
@@ -273,7 +270,6 @@ abstract class $CategoryItemModelCopyWith<$Res> {
       String? isOpen,
       String? category,
       String? type,
-      String? projectType,
       List<int> image});
 }
 
@@ -300,7 +296,6 @@ class _$CategoryItemModelCopyWithImpl<$Res, $Val extends CategoryItemModel>
     Object? owner = freezed,
     Object? price = freezed,
     Object? thumbnail = freezed,
-    Object? count = freezed,
     Object? deadline = freezed,
     Object? description = freezed,
     Object? waitlistCount = freezed,
@@ -309,7 +304,6 @@ class _$CategoryItemModelCopyWithImpl<$Res, $Val extends CategoryItemModel>
     Object? isOpen = freezed,
     Object? category = freezed,
     Object? type = freezed,
-    Object? projectType = freezed,
     Object? image = null,
   }) {
     return _then(_value.copyWith(
@@ -345,10 +339,6 @@ class _$CategoryItemModelCopyWithImpl<$Res, $Val extends CategoryItemModel>
           ? _value.thumbnail
           : thumbnail // ignore: cast_nullable_to_non_nullable
               as String?,
-      count: freezed == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as String?,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
@@ -381,10 +371,6 @@ class _$CategoryItemModelCopyWithImpl<$Res, $Val extends CategoryItemModel>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      projectType: freezed == projectType
-          ? _value.projectType
-          : projectType // ignore: cast_nullable_to_non_nullable
-              as String?,
       image: null == image
           ? _value.image
           : image // ignore: cast_nullable_to_non_nullable
@@ -410,7 +396,6 @@ abstract class _$$CategoryItemModelImplCopyWith<$Res>
       String? owner,
       int? price,
       String? thumbnail,
-      String? count,
       String? deadline,
       String? description,
       int? waitlistCount,
@@ -419,7 +404,6 @@ abstract class _$$CategoryItemModelImplCopyWith<$Res>
       String? isOpen,
       String? category,
       String? type,
-      String? projectType,
       List<int> image});
 }
 
@@ -444,7 +428,6 @@ class __$$CategoryItemModelImplCopyWithImpl<$Res>
     Object? owner = freezed,
     Object? price = freezed,
     Object? thumbnail = freezed,
-    Object? count = freezed,
     Object? deadline = freezed,
     Object? description = freezed,
     Object? waitlistCount = freezed,
@@ -453,7 +436,6 @@ class __$$CategoryItemModelImplCopyWithImpl<$Res>
     Object? isOpen = freezed,
     Object? category = freezed,
     Object? type = freezed,
-    Object? projectType = freezed,
     Object? image = null,
   }) {
     return _then(_$CategoryItemModelImpl(
@@ -489,10 +471,6 @@ class __$$CategoryItemModelImplCopyWithImpl<$Res>
           ? _value.thumbnail
           : thumbnail // ignore: cast_nullable_to_non_nullable
               as String?,
-      count: freezed == count
-          ? _value.count
-          : count // ignore: cast_nullable_to_non_nullable
-              as String?,
       deadline: freezed == deadline
           ? _value.deadline
           : deadline // ignore: cast_nullable_to_non_nullable
@@ -525,10 +503,6 @@ class __$$CategoryItemModelImplCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as String?,
-      projectType: freezed == projectType
-          ? _value.projectType
-          : projectType // ignore: cast_nullable_to_non_nullable
-              as String?,
       image: null == image
           ? _value._image
           : image // ignore: cast_nullable_to_non_nullable
@@ -550,7 +524,6 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
       this.owner,
       this.price,
       this.thumbnail,
-      this.count,
       this.deadline,
       this.description,
       this.waitlistCount,
@@ -559,7 +532,6 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
       this.isOpen,
       this.category,
       this.type,
-      this.projectType,
       final List<int> image = const []})
       : _image = image;
 
@@ -583,8 +555,6 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
   @override
   final String? thumbnail;
   @override
-  final String? count;
-  @override
   final String? deadline;
   @override
   final String? description;
@@ -600,8 +570,6 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
   final String? category;
   @override
   final String? type;
-  @override
-  final String? projectType;
   final List<int> _image;
   @override
   @JsonKey()
@@ -613,7 +581,7 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
 
   @override
   String toString() {
-    return 'CategoryItemModel(id: $id, categoryId: $categoryId, projectTypeId: $projectTypeId, userId: $userId, title: $title, owner: $owner, price: $price, thumbnail: $thumbnail, count: $count, deadline: $deadline, description: $description, waitlistCount: $waitlistCount, totalFundedCount: $totalFundedCount, totalFunded: $totalFunded, isOpen: $isOpen, category: $category, type: $type, projectType: $projectType, image: $image)';
+    return 'CategoryItemModel(id: $id, categoryId: $categoryId, projectTypeId: $projectTypeId, userId: $userId, title: $title, owner: $owner, price: $price, thumbnail: $thumbnail, deadline: $deadline, description: $description, waitlistCount: $waitlistCount, totalFundedCount: $totalFundedCount, totalFunded: $totalFunded, isOpen: $isOpen, category: $category, type: $type, image: $image)';
   }
 
   @override
@@ -632,7 +600,6 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
             (identical(other.price, price) || other.price == price) &&
             (identical(other.thumbnail, thumbnail) ||
                 other.thumbnail == thumbnail) &&
-            (identical(other.count, count) || other.count == count) &&
             (identical(other.deadline, deadline) ||
                 other.deadline == deadline) &&
             (identical(other.description, description) ||
@@ -647,35 +614,30 @@ class _$CategoryItemModelImpl implements _CategoryItemModel {
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.type, type) || other.type == type) &&
-            (identical(other.projectType, projectType) ||
-                other.projectType == projectType) &&
             const DeepCollectionEquality().equals(other._image, _image));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hashAll([
-        runtimeType,
-        id,
-        categoryId,
-        projectTypeId,
-        userId,
-        title,
-        owner,
-        price,
-        thumbnail,
-        count,
-        deadline,
-        description,
-        waitlistCount,
-        totalFundedCount,
-        totalFunded,
-        isOpen,
-        category,
-        type,
-        projectType,
-        const DeepCollectionEquality().hash(_image)
-      ]);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      categoryId,
+      projectTypeId,
+      userId,
+      title,
+      owner,
+      price,
+      thumbnail,
+      deadline,
+      description,
+      waitlistCount,
+      totalFundedCount,
+      totalFunded,
+      isOpen,
+      category,
+      type,
+      const DeepCollectionEquality().hash(_image));
 
   /// Create a copy of CategoryItemModel
   /// with the given fields replaced by the non-null parameter values.
@@ -704,7 +666,6 @@ abstract class _CategoryItemModel implements CategoryItemModel {
       final String? owner,
       final int? price,
       final String? thumbnail,
-      final String? count,
       final String? deadline,
       final String? description,
       final int? waitlistCount,
@@ -713,7 +674,6 @@ abstract class _CategoryItemModel implements CategoryItemModel {
       final String? isOpen,
       final String? category,
       final String? type,
-      final String? projectType,
       final List<int> image}) = _$CategoryItemModelImpl;
 
   factory _CategoryItemModel.fromJson(Map<String, dynamic> json) =
@@ -736,8 +696,6 @@ abstract class _CategoryItemModel implements CategoryItemModel {
   @override
   String? get thumbnail;
   @override
-  String? get count;
-  @override
   String? get deadline;
   @override
   String? get description;
@@ -753,8 +711,6 @@ abstract class _CategoryItemModel implements CategoryItemModel {
   String? get category;
   @override
   String? get type;
-  @override
-  String? get projectType;
   @override
   List<int> get image;
 
