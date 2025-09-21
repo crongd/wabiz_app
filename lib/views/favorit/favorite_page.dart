@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:intl/intl.dart';
+import 'package:wabiz_app/shared/widgets/project_large_widget.dart';
 import 'package:wabiz_app/theme.dart';
 import 'package:wabiz_app/view_model/favorite/favorite_view_model.dart';
 
@@ -82,6 +85,10 @@ class _FavoritePageState extends State<FavoritePage> {
                     itemCount: favorites.projects.length,
                     itemBuilder: (context, index) {
                       final project = favorites.projects[index];
+                      return ProjectLargeWidget(
+                        projectDataString: jsonEncode(project.toJson()),
+                        showFavorite: true,
+                      );
                       return Container(
                         margin: EdgeInsets.only(
                           left: 16,

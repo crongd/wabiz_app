@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:wabiz_app/model/project/project_model.dart';
 import 'package:wabiz_app/service/home/home_api_service.dart';
+import 'package:wabiz_app/shared/widgets/project_large_widget.dart';
 import 'package:wabiz_app/theme.dart';
 import 'package:wabiz_app/view_model/home/home_view_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -20,7 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final numberFormatter = NumberFormat('###,###,###,###');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,88 +167,38 @@ class _HomePageState extends State<HomePage> {
                         return Container(
                           color: Colors.white,
                           child: ListView.builder(
-                              itemCount: 10,
-                              itemBuilder: (context, index) {
-                                final project = data.projects[index];
-                                return InkWell(
-                                  onTap: () {
-                                    context.push('/detail', extra: project.toJson());
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.only(
-                                      bottom: 8,
-                                      left: 16,
-                                      right: 16,
-                                      top: 20,
-                                    ),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            offset: Offset(0, 8),
-                                            color: Colors.black.withOpacity(.1),
-                                            blurRadius: 30,
-                                            spreadRadius: 4,
-                                          ),
-                                        ]
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          height: 220,
-                                          decoration: BoxDecoration(
-                                              color: Colors.grey,
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10),
-                                                topRight: Radius.circular(10),
-                                              ),
-                                              image: DecorationImage(
-                                                  image: CachedNetworkImageProvider(project.thumbnail ?? ''),
-                                                  fit: BoxFit.cover
-                                              )
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(16.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(project?.isOpen == 'close'
-                                                  ? '${numberFormatter.format(project?.waitlistCount)}명이 기다려요'
-                                                  : '${numberFormatter.format(project?.waitlistCount)}명이 인증했어요',
-                                                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18, color: AppColors.primary),),
-                                              Gap(8),
-                                              Text('${project?.title}',),
-                                              Gap(16),
-                                              Text('${project?.owner}', style: TextStyle(color: AppColors.wabizGray[500]),),
-                                              Gap(16),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.bg,
-                                                  borderRadius: BorderRadius.circular(3),
-                                                ),
-                                                padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                                                child: Text(project?.isOpen == 'close'
-                                                    ? '오픈예정'
-                                                    : '바로구매',
-                                                  style: TextStyle(fontSize: 10),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              final project = data.projects[index];
+                              return ProjectLargeWidget(projectDataString: jsonEncode(project.toJson()));
+                            }
                           ),
                         );
                       }
                     },
-                    error: (error, trace) => Text('$error'),
+                    error: (error, trace) {
+                      switch (error) {
+                        case ConnectionTimeoutError():
+                          return Center(
+                            child: Text('${error.toString()}'),
+                          );
+                        case ConnectionError():
+                          return Center(
+                            child: Text('${error.toString()}'),
+                          );
+                        case UnsupportedError():
+                          return Center(
+                            child: Text('${error.toString()}'),
+                          );
+                      }
+
+                      return globalErrorHandler(
+                        error as ErrorHandler,
+                        error as DioException,
+                        ref,
+                        fetchHomeProjectProvider,
+                      );
+                    },
                     loading: () => Center(child: CircularProgressIndicator(),)
                   );
                   // return FutureBuilder(
@@ -359,4 +311,53 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+sealed class ErrorHandler {}
+
+class ConnectionTimeoutError extends ErrorHandler {
+  DioException exception;
+
+  ConnectionTimeoutError(this.exception);
+}
+
+class ConnectionError extends ErrorHandler {
+  DioException exception;
+
+  ConnectionError(this.exception);
+}
+
+Widget globalErrorHandler(
+  ErrorHandler? errorHandler,
+  DioException? exception,
+  WidgetRef? ref,
+  ProviderOrFamily? provider,
+) {
+  return Padding(
+    padding: EdgeInsets.all(16),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text('${exception?.message}'),
+        if (ref != null) 
+          TextButton(
+            onPressed: () {
+              if (provider != null) {
+                ref.invalidate(provider);
+              }
+            },
+            child: Text('새로고침')
+          ),
+        TextButton(
+          onPressed: () {
+            Clipboard.setData(
+              ClipboardData(text: exception?.stackTrace.toString() ?? '')
+            );
+          },
+          child: Text('에러 보고')
+        )
+      ],
+    ),
+  );
 }

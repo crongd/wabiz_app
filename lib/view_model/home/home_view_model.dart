@@ -1,9 +1,12 @@
 
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:wabiz_app/model/home/home_model.dart';
 import 'package:wabiz_app/repository/home/home_repository.dart';
 import 'package:wabiz_app/shared/model/category.dart';
+import 'package:wabiz_app/views/home/home_page.dart';
 
 part 'home_view_model.g.dart';
 part 'home_view_model.freezed.dart';
@@ -37,17 +40,24 @@ class HomeViewModel extends _$HomeViewModel{
 }
 
 @riverpod
-Future<HomeModel> fetchHomeProject(FetchHomeProjectRef ref) async {
+Future<HomeModel> fetchHomeProject(Ref ref) async {
   try {
-    final result = ref.watch(homeRepositoryProvider).getHomeProjects();
+    final result = await ref.watch(homeRepositoryProvider).getHomeProjects();
     return result;
-  } catch (e) {
+  } on DioException catch (e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+        throw ConnectionTimeoutError(e);
+      case DioExceptionType.connectionError:
+        throw ConnectionTimeoutError(e);
+      default:
+    }
     return HomeModel();
   }
 }
 
 @riverpod
-Future<List<ProjectCategory>> fetchHomeCategories(ref) async {
+Future<List<ProjectCategory>> fetchHomeCategories(Ref ref) async {
   await Future.delayed(Duration(milliseconds: 2000));
 
   List<ProjectCategory> categories = [
